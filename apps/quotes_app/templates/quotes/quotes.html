@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+       <meta charset="UTF-8">
+       <title>Quotes</title>
+       <style>
+            .line{
+                border: solid black 1px;
+                margin: 5px;
+                padding: 5px;
+            }
+            .block{
+                display: inline-block;
+                vertical-align: top;
+                width: 400px;
+            }
+            .messages{
+                color: red;
+            }
+            #logout{
+                margin-left: 770px;
+            }
+        </style>
+    </head>
+    <body>
+        <a id="logout" href="/logout">Logout</a>
+        <h1>Welcome, {{alias}}!</h1>
+        <div class="line block">
+            <h3>Quotable Quotes</h3>
+            {% for quote in quotes %}
+                <div class="line">
+                    <p>{{quote.author}}: {{quote.quote}}</p>
+                    <p>posted by: <a href="/users/{{quote.posted_by.id}}">{{quote.posted_by.alias}}</a></p>
+                    <form action="/like" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="quote_id" value="{{quote.id}}">
+                        <input type="submit" value="Add to my list">            
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+        <div class='block'>
+            <div class="line">
+                <h3>Your Favorites</h3>
+                {% for quote in favs %}
+                    <div class="line">
+                        <p>{{quote.author}}: {{quote.quote}}</p>
+                        <p>posted by: <a href="/users/{{quote.posted_by.id}}">{{quote.posted_by.alias}}</a></p>
+                        <form action="/unlike" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="quote_id" value="{{quote.id}}">
+                            <input type="submit" value="Remove from my list">            
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+            <div>
+                <h3>Contribute a Quote:</h3>
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}                           
+                            <li>{{ message }} </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <form action="/add_quote" method="post">
+                    {% csrf_token %}
+                    <p>Quoted by: <input type="text" name="author"></p>
+                    <p>Message: <textarea name="quote" cols="30" rows="10"></textarea></p>
+                    <input type="submit" value="Submit">            
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

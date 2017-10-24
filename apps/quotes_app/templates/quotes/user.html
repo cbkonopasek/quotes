@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+       <meta charset="UTF-8">
+       <title>Quotes</title>
+       <style>
+           div{
+               display: inline-block;
+               width: 500px;
+               vertical-align: top;
+           }
+           .red{
+               color: red;
+           }
+           .quote{
+               margin: 20px;
+           }
+       </style>
+    </head>
+    <body>
+        <div >
+            <p>Posts by {{user.alias}}</p>
+            <p>Count: {{count}}</p>
+            {% for quote in quotes %}
+                <p class="quote"><span class="red">{{quote.author}}:</span> {{quote.quote}}</p>
+            {% endfor %}
+        </div>
+        <div>
+                <a href="/quotes">Dashboard</a> | <a href="/logout">Logout</a>
+        </div>
+    </body>
+</html>
